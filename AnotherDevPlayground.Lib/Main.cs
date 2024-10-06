@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnotherDevPlayground.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,12 @@ namespace AnotherDevPlayground.Lib
             await Task.Delay(1500);
             Console.WriteLine("System Status: Online");
             Console.WriteLine();
+
+            Player player = new Player()
+            {
+                Name = "Playerito"
+            };
+
         }
     }
 }
