@@ -1,4 +1,5 @@
-﻿using AnotherDevPlayground.Models.Models;
+﻿using AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds;
+using AnotherDevPlayground.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace AnotherDevPlayground.Lib
                 Name = "Playerito"
             };
 
+            ArrayPlayground.ArrayInAllDimensions();
         }
     }
 }
