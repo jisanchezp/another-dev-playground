@@ -24,6 +24,8 @@ namespace AnotherDevPlayground.Lib
                 Name = "Playerito"
             };
 
+            ArrayPlayground.PassSingleDimensionalArraysAsArguments();
+
             ArrayPlayground.ArrayInAllDimensions();
         }
     }

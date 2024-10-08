@@ -55,9 +55,35 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
             jaggedArray2[1] = array2;
         }
 
+        private static void DisplayArray(string[] arr) => Console.WriteLine(string.Join(", ", arr));
+        private static void ChangeArray(string[] arr) => Array.Reverse(arr);
 
+        private static void ChangeArrayElements(string[] arr) 
+        {
+            arr[0] = "Mon";
+            arr[1] = "Wed";
+            arr[2] = "Fri";
+        }
 
-        public static void PrintCollection<T>(this T[] array) where T : ICollection
+        public static void PassSingleDimensionalArraysAsArguments()
+        {
+            string[] weekDays = ["Sun", "Monday", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            DisplayArray(weekDays);
+            Console.WriteLine();
+
+            ChangeArray(weekDays);
+
+            Console.WriteLine("Array weekDays after the call to ChangeArray: ");
+            DisplayArray(weekDays);
+            Console.WriteLine();
+
+            ChangeArrayElements(weekDays);
+            Console.WriteLine("Array weekDays after the call to ChangeArrayElements:");
+            DisplayArray(weekDays);
+
+        }
+
+        public static void PrintCollection<T>(this T array) where T : ICollection
         {
             foreach (var item in array)
             {
