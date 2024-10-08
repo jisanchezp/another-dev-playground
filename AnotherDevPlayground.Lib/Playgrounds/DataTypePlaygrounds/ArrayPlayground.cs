@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,6 +53,16 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
 
             jaggedArray2[0] = array1;
             jaggedArray2[1] = array2;
-        }        
+        }
+
+
+
+        public static void PrintCollection<T>(this T[] array) where T : ICollection
+        {
+            foreach (var item in array)
+            {
+                Console.WriteLine(item);
+            }
+        }
     }
 }
