@@ -15,37 +15,64 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private int[] _map;
         private Player _player;
         private string _mapPrint = string.Empty;
+        private Dictionary<string, string> controlDictionary = new Dictionary<string, string>();
+        private readonly int _leftWallIndex;
+        private readonly int  _rightWallIndex;
 
         public PlayerMovementGame(Player player, int mapSize)
         {
             _player = player;
             _map = new int[mapSize];
-        }
+            _leftWallIndex = 0;
+            _rightWallIndex = _map.Length - 1;
+    }
         public void Start()
         {
             SetSpawnXPosition();
             _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
-            MovePlayerLeftWithLog();
-            PrintMap();
-            MovePlayerLeftWithLog();
-            PrintMap();
-            MovePlayerLeftWithLog();
-            PrintMap();
-            MovePlayerRightWithLog();
-            PrintMap();
-            MovePlayerRightWithLog();
-            PrintMap();
-            MovePlayerRightWithLog();
-            PrintMap();
-            MovePlayerLeftWithLog();
-            PrintMap();
-            MovePlayerLeftWithLog();
-            PrintMap();
+
+            ActiveGameLoop();
+
+            Console.WriteLine("You've just hit the wall...");
+        }
+
+        private void ActiveGameLoop()
+        {
+            do
+            {
+                Console.Write("Enter A to go left or D to go right: ");
+                string? directionInput = Console.ReadLine();
+
+                if (directionInput != null)
+                {
+                    switch (directionInput.ToUpper())
+                    {
+                        case "A":
+                            MovePlayerLeftWithLog();
+                            PrintMap();
+                            break;
+                        case "D":
+                            MovePlayerRightWithLog();
+                            PrintMap();
+                            break;
+                    }
+                }
+
+            }
+            while (HasPlayerCollidedWithWall() == false);
+        }
+
+        private bool HasPlayerCollidedWithWall()
+        {
+            var playerCollidedLeftWall = _player.CurrentPosition.X == _leftWallIndex;
+            var playerCollidedRightWall = _player.CurrentPosition.X == _rightWallIndex;
+
+            return playerCollidedLeftWall || playerCollidedRightWall;
         }
 
         private void SetSpawnXPosition()
         {
-            var spawnPositionX = Random.Shared.Next(64);
+            var spawnPositionX = Random.Shared.Next(minValue: _leftWallIndex+1, maxValue: _rightWallIndex-1);
             _player.SetPositionX(spawnPositionX);
         }
 
