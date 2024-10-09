@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
-{   
+{
     internal static class ArrayPlayground
     {
         /*
@@ -28,7 +28,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
           
         */
 
-        public static void ArrayInAllDimensions() 
+        public static void ArrayInAllDimensions()
         {
             // Declare a single-dimensional array of 5 integers.
             int[] array1 = new int[10]; // Elements are zero initialized
@@ -58,7 +58,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
         private static void DisplayArray(string[] arr) => Console.WriteLine(string.Join(", ", arr));
         private static void ChangeArray(string[] arr) => Array.Reverse(arr);
 
-        private static void ChangeArrayElements(string[] arr) 
+        private static void ChangeArrayElements(string[] arr)
         {
             arr[0] = "Mon";
             arr[1] = "Wed";
@@ -68,19 +68,36 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
         public static void PassSingleDimensionalArraysAsArguments()
         {
             string[] weekDays = ["Sun", "Monday", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            DisplayArray(weekDays);
-            Console.WriteLine();
+            DisplayArrayAndWriteLine(weekDays);
+            ChangeAndDisplayArray(weekDays);
+            ChangeArrayElementsAndDisplayArray(weekDays);
 
-            ChangeArray(weekDays);
+        }
 
-            Console.WriteLine("Array weekDays after the call to ChangeArray: ");
-            DisplayArray(weekDays);
-            Console.WriteLine();
-
+        private static void ChangeArrayElementsAndDisplayArray(string[] weekDays)
+        {
             ChangeArrayElements(weekDays);
             Console.WriteLine("Array weekDays after the call to ChangeArrayElements:");
             DisplayArray(weekDays);
+        }
 
+        private static void ChangeAndDisplayArray(string[] weekDays)
+        {
+            ChangeArray(weekDays);
+            Console.WriteLine("Array weekDays after the call to ChangeArray: ");
+            DisplayArrayAndWriteLine(weekDays);
+        }
+
+        private static void DisplayArrayAndWriteLine(string[] weekDays)
+        {
+            DisplayArray(weekDays);
+            Console.WriteLine();
+        }
+
+        private static void DisplayArrayAndWriteLine(string[] weekDays, string writeLineMessage)
+        {
+            DisplayArray(weekDays);
+            Console.WriteLine(writeLineMessage);
         }
 
         public static void PrintCollection<T>(this T array) where T : ICollection
