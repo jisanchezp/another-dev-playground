@@ -22,61 +22,68 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         }
         public void Start()
         {
-            _player.Position.X = Random.Shared.Next(100);
-            _map[_player.Position.X] = (int)MapObjectEnum.Player;
-            MoveLeftWithLog();
-            MoveLeftWithLog();
-            MoveLeftWithLog();
-            MoveRightWithLog();
-            MoveRightWithLog();
-            MoveRightWithLog();
-            MoveLeftWithLog();
-            MoveLeftWithLog();
+            SetSpawnXPosition();
+            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
+            MovePlayerLeftWithLog();
+            MovePlayerLeftWithLog();
+            MovePlayerLeftWithLog();
+            MovePlayerRightWithLog();
+            MovePlayerRightWithLog();
+            MovePlayerRightWithLog();
+            MovePlayerLeftWithLog();
+            MovePlayerLeftWithLog();
         }
 
-
-        private void MoveLeftWithLog()
+        private void SetSpawnXPosition()
         {
-            var hasPlayerMoved = MoveLeft();
+            var spawnPositionX = Random.Shared.Next(100);
+            _player.SetPositionX(spawnPositionX);
+        }
+
+        private void MovePlayerLeftWithLog()
+        {
+            var hasPlayerMoved = MovePlayerLeft();
             LogPlayerMovement(hasPlayerMoved, "left");
         }
 
-        private void MoveRightWithLog()
+        private void MovePlayerRightWithLog()
         {
-            var hasPlayerMoved = MoveRight();
+            var hasPlayerMoved = MovePlayerRight();
             LogPlayerMovement(hasPlayerMoved, "right");
         }
 
         private void LogPlayerMovement(bool hasPlayerMoved, string direction)
         {
             if (hasPlayerMoved)
-                Console.WriteLine($"Player moved {direction} successfully. Current position: {_player.Position.X}");
+                Console.WriteLine($"Player moved {direction} successfully. Current position: {_player.CurrentPosition.X}");
         }
 
-        private bool MoveRight()
+        private bool MovePlayerRight()
         {
             bool output = false;
+            int playerCurrentPosition = _player.CurrentPosition.X;
 
-            if (_player.Position.X < _map.Length - 1)
+            if (playerCurrentPosition < _map.Length - 1)
             {
-                _map[_player.Position.X] = (int)MapObjectEnum.Empty;
-                _player.Position.X += 1;
-                _map[_player.Position.X] = (int)MapObjectEnum.Player;
+                _map[playerCurrentPosition] = (int)MapObjectEnum.Empty;
+                _player.MoveRight();
+                _map[playerCurrentPosition] = (int)MapObjectEnum.Player;
                 output = true;
             }
 
             return output;
         }
 
-        private bool MoveLeft()
+        private bool MovePlayerLeft()
         {
             bool output = false;
+            int playerCurrentPosition = _player.CurrentPosition.X;
 
-            if (_player.Position.X > 0)
+            if (playerCurrentPosition > 0)
             {
-                _map[_player.Position.X] = (int)MapObjectEnum.Empty;
-                _player.Position.X -= 1;
-                _map[_player.Position.X] = (int)MapObjectEnum.Player;
+                _map[playerCurrentPosition] = (int)MapObjectEnum.Empty;
+                _player.MoveLeft();
+                _map[playerCurrentPosition] = (int)MapObjectEnum.Player;
                 output = true;
             }
 

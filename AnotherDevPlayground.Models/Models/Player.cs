@@ -6,10 +6,29 @@ using System.Threading.Tasks;
 
 namespace AnotherDevPlayground.Models.Models
 {
-    public class Player
+    public class Player : IMovementCoordX
     {
         public int Id { get; set; }
         public string  Name { get; set; } = string.Empty;
-        public Position Position { get; set; } = new Position();                
+        public Position PreviousPosition { get; private set; } = new Position();
+        public Position CurrentPosition { get; private set; } = new Position();
+
+
+        public void MoveLeft()
+        {
+            PreviousPosition.X = CurrentPosition.X;
+            CurrentPosition.X -= 1;
+        }
+
+        public void MoveRight()
+        {
+            PreviousPosition.X = CurrentPosition.X;
+            CurrentPosition.X += 1;
+        }
+
+        public void SetPositionX(int spawnPositionX)
+        {
+            CurrentPosition.X = spawnPositionX;
+        }
     }
 }
