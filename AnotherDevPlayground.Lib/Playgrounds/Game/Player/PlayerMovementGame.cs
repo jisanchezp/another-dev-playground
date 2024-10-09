@@ -14,6 +14,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
     {
         private int[] _map;
         private Player _player;
+        private string _mapPrint = string.Empty;
 
         public PlayerMovementGame(Player player, int mapSize)
         {
@@ -25,18 +26,26 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             SetSpawnXPosition();
             _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
             MovePlayerLeftWithLog();
+            PrintMap();
             MovePlayerLeftWithLog();
+            PrintMap();
             MovePlayerLeftWithLog();
+            PrintMap();
             MovePlayerRightWithLog();
+            PrintMap();
             MovePlayerRightWithLog();
+            PrintMap();
             MovePlayerRightWithLog();
+            PrintMap();
             MovePlayerLeftWithLog();
+            PrintMap();
             MovePlayerLeftWithLog();
+            PrintMap();
         }
 
         private void SetSpawnXPosition()
         {
-            var spawnPositionX = Random.Shared.Next(100);
+            var spawnPositionX = Random.Shared.Next(64);
             _player.SetPositionX(spawnPositionX);
         }
 
@@ -55,7 +64,10 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private void LogPlayerMovement(bool hasPlayerMoved, string direction)
         {
             if (hasPlayerMoved)
+            {
                 Console.WriteLine($"Player moved {direction} successfully. Current position: {_player.CurrentPosition.X}");
+                Console.WriteLine();
+            }
         }
 
         private bool MovePlayerRight()
@@ -65,9 +77,8 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
 
             if (playerCurrentPosition < _map.Length - 1)
             {
-                _map[playerCurrentPosition] = (int)MapObjectEnum.Empty;
                 _player.MoveRight();
-                _map[playerCurrentPosition] = (int)MapObjectEnum.Player;
+                UpdatePlayerOnMap();
                 output = true;
             }
 
@@ -80,14 +91,25 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             int playerCurrentPosition = _player.CurrentPosition.X;
 
             if (playerCurrentPosition > 0)
-            {
-                _map[playerCurrentPosition] = (int)MapObjectEnum.Empty;
+            {                
                 _player.MoveLeft();
-                _map[playerCurrentPosition] = (int)MapObjectEnum.Player;
+                UpdatePlayerOnMap();
                 output = true;
             }
 
             return output;
+        }
+
+        private void UpdatePlayerOnMap()
+        {
+            _map[_player.PreviousPosition.X] = (int)MapObjectEnum.Empty;
+            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
+        }
+
+        private void PrintMap() 
+        {
+            Console.WriteLine(string.Join("", _map));
+            Console.WriteLine();
         }
 
 
