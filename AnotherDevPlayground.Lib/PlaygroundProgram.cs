@@ -27,11 +27,27 @@ namespace AnotherDevPlayground.Lib
             int[] map = new int[64];
             player.Position.X = Random.Shared.Next(100);
             map[player.Position.X] = (int) MapObjectEnum.Player;
-            
+
             MoveLeft(map, player);
+            MoveRight(map, player);
             ArrayPlayground.PassSingleDimensionalArraysAsArguments();
 
             ArrayPlayground.ArrayInAllDimensions();
+        }
+
+        private static void MoveRight(int[] map, Player player)
+        {
+            bool output = false;
+
+            if (player.Position.X < map.Length - 1)
+            {
+                map[player.Position.X] = (int)MapObjectEnum.Empty;
+                player.Position.X += 1;
+                map[player.Position.X] = (int)MapObjectEnum.Player;
+                output = true;
+            }
+
+            return output;
         }
 
         private static bool MoveLeft(int[] map, Player player)
