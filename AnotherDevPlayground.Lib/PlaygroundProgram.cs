@@ -27,11 +27,9 @@ namespace AnotherDevPlayground.Lib
             };
 
             int mapSize = 64;
-            var playerMovementGame = new PlayerMovementGame(player, mapSize);
-
+            //var playerMovementGame = new PlayerMovementGame(player, mapSize);
             var taskPlayground = new TaskPlayground();
-            //taskPlayground.CreateAndRunTasksImplicitly();
-            taskPlayground.CreateAndRunTasksExplicitlyLesserControl();
+            
 
             //playerMovementGame.Start();
 

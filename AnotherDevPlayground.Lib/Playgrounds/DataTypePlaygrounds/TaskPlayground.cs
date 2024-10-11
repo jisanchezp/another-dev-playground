@@ -10,26 +10,50 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
     {
         internal TaskPlayground() {
             Thread.CurrentThread.Name = "Main";
+
+            //CreateAndRunTasksImplicitly();
+            //CreateAndRunTasksExplicitlyLesserControl();
+            AsyncState_CreateTaskFactory();
         }
 
-        internal void CreateAndRunTasksImplicitly()
+        class CustomData
         {
-            Parallel.Invoke(
-                () => { ParallelWork(1, 1000); },
-                () => { ParallelWork(2, 1300); },
-                () => { ParallelWork(3, 1900); },
-                () => { ParallelWork(4, 1200); },
-                () => { ParallelWork(5, 1250); }
-            );
+            public long CreationTime { get; set; }
+            public int Name { get; set; }
+            public int ThreadNum { get; set; }
         }
 
-        private void ParallelWork(int id, int delay)
+        void AsyncState_CreateTaskFactory()
         {
-            Task.Delay(delay).Wait();
-            Console.WriteLine($"ParallelWork {id} has been completed");
+            Task[] taskArray = new Task[10];
+            for (int i = 0; i < taskArray.Length; i++)
+            {
+                taskArray[i] = Task.Factory.StartNew((Object obj) =>
+                {
+                    CustomData data = obj as CustomData;
+                    if (data == null) return;
+
+                    data.ThreadNum = Thread.CurrentThread.ManagedThreadId;
+                },
+                new CustomData()
+                {
+                    Name = i,
+                    CreationTime = DateTime.UtcNow.Ticks
+                });
+            }
+            Task.WaitAll(taskArray); ;
+            foreach (Task task in taskArray)
+            {
+                var data = task.AsyncState as CustomData;
+                if (data != null)
+                    Console.WriteLine("Task #{0} created at {1}, ran on thread #{2}",
+                        data.Name, data.CreationTime, data.ThreadNum);
+            }
         }
 
-        internal void CreateAndRunTasksExplicitlyLesserControl()
+        
+
+        void CreateAndRunTasksExplicitlyLesserControl()
         {
             /* 
              
@@ -48,7 +72,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
             taskA.Wait();
         }
 
-        internal void CreateAndRunTasksExplicitlyGreaterControl()
+        void CreateAndRunTasksExplicitlyGreaterControl()
         {
             /* 
             
@@ -66,6 +90,23 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
                                     Thread.CurrentThread.Name);
 
             taskA.Wait();
+        }
+
+        void CreateAndRunTasksImplicitly()
+        {
+            Parallel.Invoke(
+                () => { ParallelWork(1, 1000); },
+                () => { ParallelWork(2, 1300); },
+                () => { ParallelWork(3, 1900); },
+                () => { ParallelWork(4, 1200); },
+                () => { ParallelWork(5, 1250); }
+            );
+        }
+
+        void ParallelWork(int id, int delay)
+        {
+            Task.Delay(delay).Wait();
+            Console.WriteLine($"ParallelWork {id} has been completed");
         }
     }
 }
