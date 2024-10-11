@@ -28,7 +28,11 @@ namespace AnotherDevPlayground.Lib
 
             int mapSize = 64;
             var playerMovementGame = new PlayerMovementGame(player, mapSize);
-            playerMovementGame.Start();
+
+            var taskPlayground = new TaskPlayground();
+            taskPlayground.CreatAndRunTasksImplicitly();
+
+            //playerMovementGame.Start();
 
             //ArrayPlayground.PassSingleDimensionalArraysAsArguments();
             //ArrayPlayground.ArrayInAllDimensions();
