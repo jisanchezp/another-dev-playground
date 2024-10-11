@@ -30,7 +30,8 @@ namespace AnotherDevPlayground.Lib
             var playerMovementGame = new PlayerMovementGame(player, mapSize);
 
             var taskPlayground = new TaskPlayground();
-            taskPlayground.CreatAndRunTasksImplicitly();
+            //taskPlayground.CreateAndRunTasksImplicitly();
+            taskPlayground.CreateAndRunTasksExplicitlyLesserControl();
 
             //playerMovementGame.Start();
 

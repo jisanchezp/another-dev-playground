@@ -8,9 +8,11 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
 {
     internal class TaskPlayground
     {
-        public TaskPlayground() { }
-        
-        public void CreatAndRunTasksImplicitly()
+        internal TaskPlayground() {
+            Thread.CurrentThread.Name = "Main";
+        }
+
+        internal void CreateAndRunTasksImplicitly()
         {
             Parallel.Invoke(
                 () => { ParallelWork(1, 1000); },
@@ -25,6 +27,45 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
         {
             Task.Delay(delay).Wait();
             Console.WriteLine($"ParallelWork {id} has been completed");
+        }
+
+        internal void CreateAndRunTasksExplicitlyLesserControl()
+        {
+            /* 
+             
+            The Run methods are the preferred way 
+            to create and start tasks when more 
+            control over the creation and scheduling
+            isn't needed.
+
+             */
+
+            Task taskA = Task.Run(() => Console.WriteLine("Hello from taskA."));
+
+            Console.WriteLine("Hello from thread '{0}'",
+                                    Thread.CurrentThread.Name);
+
+            taskA.Wait();
+        }
+
+        internal void CreateAndRunTasksExplicitlyGreaterControl()
+        {
+            /* 
+            
+            When you need greater control over
+            task execution or return a value
+            from the task, you must work with Task 
+            objected more explicitly.
+
+            */
+
+            Task taskA = new Task(() => Console.WriteLine("Hello from task A!"));
+            taskA.Start();
+
+            Console.WriteLine("Hello from thread '{0}'",
+                                    Thread.CurrentThread.Name);
+
+            taskA.Wait();
         }
     }
 }
