@@ -25,37 +25,42 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             _map = new int[mapSize];
             _leftWallIndex = 0;
             _rightWallIndex = _map.Length - 1;
-    }
+        }
+
         public void Start()
         {
-            SetSpawnXPosition();
-            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
-
+            SetPlayerSpawnPositionX();
+            AddPlayerToMap();
             ActiveGameLoop();
 
             Console.WriteLine("You've just hit the wall...");
         }
 
+        private void AddPlayerToMap()
+        {
+            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
+        }
+
         private void ActiveGameLoop()
         {
+            Console.Write("Press A to go left or D to go right: ");
+            Console.WriteLine();
+            ConsoleKey choice;
             do
             {
-                Console.Write("Enter A to go left or D to go right: ");
-                string? directionInput = Console.ReadLine();
+                
+                choice = Console.ReadKey(true).Key;
 
-                if (directionInput != null)
+                switch (choice)
                 {
-                    switch (directionInput.ToUpper())
-                    {
-                        case "A":
-                            MovePlayerLeftWithLog();
-                            PrintMap();
-                            break;
-                        case "D":
-                            MovePlayerRightWithLog();
-                            PrintMap();
-                            break;
-                    }
+                    case ConsoleKey.A:
+                        MovePlayerLeft();
+                        PrintMap();
+                        break;
+                    case ConsoleKey.D:
+                        MovePlayerRight();
+                        PrintMap();
+                        break;
                 }
 
             }
@@ -70,7 +75,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             return playerCollidedLeftWall || playerCollidedRightWall;
         }
 
-        private void SetSpawnXPosition()
+        private void SetPlayerSpawnPositionX()
         {
             var spawnPositionX = Random.Shared.Next(minValue: _leftWallIndex+1, maxValue: _rightWallIndex-1);
             _player.SetPositionX(spawnPositionX);
@@ -136,9 +141,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private void PrintMap() 
         {
             Console.WriteLine(string.Join("", _map));
-            Console.WriteLine();
         }
-
 
         internal enum MapObjectEnum : int
         {
