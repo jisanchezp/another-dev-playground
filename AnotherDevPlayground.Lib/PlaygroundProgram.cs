@@ -27,11 +27,11 @@ namespace AnotherDevPlayground.Lib
             };
 
             int mapSize = 64;
-            //var playerMovementGame = new PlayerMovementGame(player, mapSize);
-            var taskPlayground = new TaskPlayground();
-            
+            var playerMovementGame = new PlayerMovementGame(player, mapSize);
+            //var taskPlayground = new TaskPlayground();
 
-            //playerMovementGame.Start();
+
+            playerMovementGame.Start();
 
             //ArrayPlayground.PassSingleDimensionalArraysAsArguments();
             //ArrayPlayground.ArrayInAllDimensions();

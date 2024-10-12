@@ -14,21 +14,27 @@ namespace AnotherDevPlayground.Models.Models
         public Position CurrentPosition { get; private set; } = new Position();
 
 
-        public void MoveLeft()
+        public Task MoveLeft()
         {
             PreviousPosition.X = CurrentPosition.X;
             CurrentPosition.X -= 1;
+
+            return Task.CompletedTask;
         }
 
-        public void MoveRight()
+        public Task MoveRight()
         {
             PreviousPosition.X = CurrentPosition.X;
             CurrentPosition.X += 1;
+
+            return Task.CompletedTask;
         }
 
-        public void SetPositionX(int spawnPositionX)
+        public Task SetPositionX(int spawnPositionX)
         {
             CurrentPosition.X = spawnPositionX;
+
+            return Task.CompletedTask;
         }
     }
 }

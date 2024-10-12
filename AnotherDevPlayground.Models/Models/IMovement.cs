@@ -2,7 +2,7 @@
 {
     public interface IMovementCoordX
     {
-        void MoveLeft();
-        void MoveRight();
+        Task MoveLeft();
+        Task MoveRight();
     }
 }
