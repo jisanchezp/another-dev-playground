@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,25 +46,30 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         {
             Console.Write("Press A to go left or D to go right: ");
             Console.WriteLine();
-            ConsoleKey choice;
 
             do
             {
-                
-                choice = Console.ReadKey(true).Key;
-
-                switch (choice)
+                Task loopTask = Task.Run(async () =>
                 {
-                    case ConsoleKey.A:
-                        await MovePlayerLeft();
-                        await PrintMap();
-                        break;
-                    case ConsoleKey.D:
-                        await MovePlayerRight();
-                        await PrintMap();
-                        break;
-                }
+                    ConsoleKey choice = Console.ReadKey().Key;
 
+                    switch (choice)
+                    {
+                        case ConsoleKey.A:
+                            await MovePlayerLeft();
+                            PrintMap();
+                            break;
+                        case ConsoleKey.D:
+                            await MovePlayerRight();
+                            PrintMap();
+                            break;
+                    }
+
+                    Thread.Sleep(150);
+                    //await Task.Delay(150);
+                });
+
+                loopTask.Wait();
             }
             while (HasPlayerCollidedWithWall() == false);
         }
@@ -127,7 +133,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
 
             if (playerCurrentPosition > 0)
             {                
-                _player.MoveLeft();
+                await _player.MoveLeft();
                 UpdatePlayerOnMap();
                 output = true;
             }
@@ -141,7 +147,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
         }
 
-        private async ValueTask PrintMap() 
+        private void PrintMap() 
         {
             Console.Clear();            
             Console.WriteLine(string.Join("", _map));
