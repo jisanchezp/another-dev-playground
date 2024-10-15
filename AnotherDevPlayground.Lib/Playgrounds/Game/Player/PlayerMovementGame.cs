@@ -19,6 +19,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private Dictionary<string, string> controlDictionary = new Dictionary<string, string>();
         private readonly int _leftWallIndex;
         private readonly int  _rightWallIndex;
+        private readonly object _turnLock = new(); // object used instead System.Threading.Lock in version lower than C# 13
 
         public PlayerMovementGame(Player player, int mapSize)
         {
@@ -46,30 +47,36 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         {
             Console.Write("Press A to go left or D to go right: ");
             Console.WriteLine();
-
+            ConsoleKey choice = ConsoleKey.None;
             do
             {
-                Task loopTask = Task.Run(async () =>
+
+                Thread.Sleep(500);
+                lock (_turnLock)
                 {
-                    ConsoleKey choice = Console.ReadKey().Key;
-
-                    switch (choice)
+                    Task loopTask = Task.Run(async () =>
                     {
-                        case ConsoleKey.A:
-                            await MovePlayerLeft();
-                            PrintMap();
-                            break;
-                        case ConsoleKey.D:
-                            await MovePlayerRight();
-                            PrintMap();
-                            break;
-                    }
+                        choice = Console.ReadKey().Key;
+                        Console.Beep();
+                        switch (choice)
+                        {
+                            case ConsoleKey.A:
+                                await MovePlayerLeft();
+                                PrintMap();
+                                break;
+                            case ConsoleKey.D:
+                                await MovePlayerRight();
 
-                    Thread.Sleep(150);
-                    //await Task.Delay(150);
-                });
+                                PrintMap();
+                                break;
+                        }
 
-                loopTask.Wait();
+                        choice = ConsoleKey.None;
+                        //await Task.Delay(150);
+                    });
+
+                    loopTask.Wait();
+                }
             }
             while (HasPlayerCollidedWithWall() == false);
         }
