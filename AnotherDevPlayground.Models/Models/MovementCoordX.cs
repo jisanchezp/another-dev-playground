@@ -1,6 +1,6 @@
 ﻿namespace AnotherDevPlayground.Models.Models
 {
-    public interface IMovementCoordX
+    public interface MovementCoordX
     {
         void MoveLeft();
         void MoveRight();

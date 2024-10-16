@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AnotherDevPlayground.Models.Models
 {
-    public class Player : IMovementCoordX
+    public class Player : MovementCoordX
     {
         public int Id { get; set; }
         public string  Name { get; set; } = string.Empty;
