@@ -3,6 +3,7 @@ using AnotherDevPlayground.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -29,7 +30,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             _rightWallIndex = _map.Length - 1;
         }
 
-        public async void Start()
+        public async Task Start()
         {
             SetPlayerSpawnPositionX();
             AddPlayerToMap();
@@ -47,38 +48,42 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         {
             Console.Write("Press A to go left or D to go right: ");
             Console.WriteLine();
-            ConsoleKey choice = ConsoleKey.None;
+            var readKey = ConsoleKey.None;
+            var auxKey = -1;
             do
             {
-
-                Thread.Sleep(500);
-                lock (_turnLock)
-                {
-                    Task loopTask = Task.Run(async () =>
-                    {
-                        choice = Console.ReadKey().Key;
-                        Console.Beep();
-                        switch (choice)
-                        {
-                            case ConsoleKey.A:
-                                await MovePlayerLeft();
-                                PrintMap();
-                                break;
-                            case ConsoleKey.D:
-                                await MovePlayerRight();
-
-                                PrintMap();
-                                break;
-                        }
-
-                        choice = ConsoleKey.None;
-                        //await Task.Delay(150);
-                    });
-
-                    loopTask.Wait();
-                }
+                readKey = Console.ReadKey().Key;
+                auxKey = (int) readKey;
+                DoPlayerMove(auxKey);
             }
             while (HasPlayerCollidedWithWall() == false);
+        }
+
+        private bool DoPlayerMove(int directionKey)
+        {
+            try
+            {
+                Console.Beep();
+                switch (directionKey)
+                {
+                    case (int) ConsoleKey.A:
+                        MovePlayerLeft();
+                        PrintMap();
+                        break;
+                    case (int) ConsoleKey.D:
+                        MovePlayerRight();
+                        PrintMap();
+                        break;
+                    default:
+                        return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }            
         }
 
         private bool HasPlayerCollidedWithWall()
@@ -95,17 +100,17 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             _player.SetPositionX(spawnPositionX);
         }
 
-        private async Task MovePlayerLeftWithLog()
+        private void MovePlayerLeftWithLog()
         {
             var direction = "left";
-            var hasPlayerMoved = await MovePlayerLeft();
+            var hasPlayerMoved = MovePlayerLeft();
             LogPlayerMovement(hasPlayerMoved, direction);
         }
 
-        private async Task MovePlayerRightWithLog()
+        private void MovePlayerRightWithLog()
         {
             var direction = "right";
-            var hasPlayerMoved = await MovePlayerRight();
+            var hasPlayerMoved = MovePlayerRight();
             LogPlayerMovement(hasPlayerMoved, direction);
         }
 
@@ -118,14 +123,14 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             }
         }
 
-        private async Task<bool> MovePlayerRight()
+        private bool MovePlayerRight()
         {
             bool output = false;
             int playerCurrentPosition = _player.CurrentPosition.X;
 
             if (playerCurrentPosition < _map.Length - 1)
             {
-                await _player.MoveRight();
+                _player.MoveRight();
                 UpdatePlayerOnMap();
                 output = true;
             }
@@ -133,14 +138,14 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             return output;
         }
 
-        private async Task<bool> MovePlayerLeft()
+        private bool MovePlayerLeft()
         {
             bool output = false;
             int playerCurrentPosition = _player.CurrentPosition.X;
 
             if (playerCurrentPosition > 0)
             {                
-                await _player.MoveLeft();
+                _player.MoveLeft();
                 UpdatePlayerOnMap();
                 output = true;
             }
