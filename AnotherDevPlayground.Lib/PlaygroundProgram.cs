@@ -31,7 +31,7 @@ namespace AnotherDevPlayground.Lib
             //var taskPlayground = new TaskPlayground();
 
 
-            await playerMovementGame.Start();
+            playerMovementGame.Start();
 
             //ArrayPlayground.PassSingleDimensionalArraysAsArguments();
             //ArrayPlayground.ArrayInAllDimensions();

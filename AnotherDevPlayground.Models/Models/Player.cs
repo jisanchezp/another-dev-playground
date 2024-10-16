@@ -10,25 +10,22 @@ namespace AnotherDevPlayground.Models.Models
     {
         public int Id { get; set; }
         public string  Name { get; set; } = string.Empty;
-        public Position PreviousPosition { get; private set; } = new Position();
         public Position CurrentPosition { get; private set; } = new Position();
 
 
         public void MoveLeft()
         {
-            PreviousPosition.X = CurrentPosition.X;
-            CurrentPosition.X -= 1;
+            CurrentPosition.X.Decrease();
         }
 
         public void MoveRight()
         {
-            PreviousPosition.X = CurrentPosition.X;
-            CurrentPosition.X += 1;
+            CurrentPosition.X.Increase();
         }
 
-        public void SetPositionX(int spawnPositionX)
+        public void SetPosition(Position position)
         {
-            CurrentPosition.X = spawnPositionX;
+            CurrentPosition = position;
         }
     }
 }

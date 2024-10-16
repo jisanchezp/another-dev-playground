@@ -28,9 +28,9 @@ namespace AnotherDevPlayground.Lib.Playgrounds.DataTypePlaygrounds
             Task[] taskArray = new Task[10];
             for (int i = 0; i < taskArray.Length; i++)
             {
-                taskArray[i] = Task.Factory.StartNew((Object obj) =>
+                taskArray[i] = Task.Factory.StartNew((Object? obj) =>
                 {
-                    CustomData data = obj as CustomData;
+                    CustomData? data = obj as CustomData;
                     if (data == null) return;
 
                     data.ThreadNum = Thread.CurrentThread.ManagedThreadId;

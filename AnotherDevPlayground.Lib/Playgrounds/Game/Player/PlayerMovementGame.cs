@@ -30,21 +30,21 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
             _rightWallIndex = _map.Length - 1;
         }
 
-        public async Task Start()
+        public void Start()
         {
             SetPlayerSpawnPositionX();
             AddPlayerToMap();
-            await ActiveGameLoop();
+            ActiveGameLoop();
 
             Console.WriteLine("You've just hit the wall...");
         }
 
         private void AddPlayerToMap()
         {
-            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
+            _map[_player.CurrentPosition.X.Value] = (int)MapObjectEnum.Player;
         }
 
-        private async Task ActiveGameLoop()
+        private void ActiveGameLoop()
         {
             Console.Write("Press A to go left or D to go right: ");
             Console.WriteLine();
@@ -88,8 +88,8 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
 
         private bool HasPlayerCollidedWithWall()
         {
-            var playerCollidedLeftWall = _player.CurrentPosition.X == _leftWallIndex;
-            var playerCollidedRightWall = _player.CurrentPosition.X == _rightWallIndex;
+            var playerCollidedLeftWall = _player.CurrentPosition.X.Value == _leftWallIndex;
+            var playerCollidedRightWall = _player.CurrentPosition.X.Value == _rightWallIndex;
 
             return playerCollidedLeftWall || playerCollidedRightWall;
         }
@@ -97,7 +97,10 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private void SetPlayerSpawnPositionX()
         {
             var spawnPositionX = Random.Shared.Next(minValue: _leftWallIndex+1, maxValue: _rightWallIndex-1);
-            _player.SetPositionX(spawnPositionX);
+            var spawnPosition = new Position();
+            spawnPosition.X.Value = spawnPositionX;
+
+            _player.SetPosition(spawnPosition);
         }
 
         private void MovePlayerLeftWithLog()
@@ -126,7 +129,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private bool MovePlayerRight()
         {
             bool output = false;
-            int playerCurrentPosition = _player.CurrentPosition.X;
+            int playerCurrentPosition = _player.CurrentPosition.X.Value;
 
             if (playerCurrentPosition < _map.Length - 1)
             {
@@ -141,7 +144,7 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
         private bool MovePlayerLeft()
         {
             bool output = false;
-            int playerCurrentPosition = _player.CurrentPosition.X;
+            int playerCurrentPosition = _player.CurrentPosition.X.Value;
 
             if (playerCurrentPosition > 0)
             {                
@@ -155,8 +158,8 @@ namespace AnotherDevPlayground.Lib.Playgrounds.Game.PlayerMovementGame
 
         private void UpdatePlayerOnMap()
         {
-            _map[_player.PreviousPosition.X] = (int)MapObjectEnum.Empty;
-            _map[_player.CurrentPosition.X] = (int)MapObjectEnum.Player;
+            _map[_player.CurrentPosition.X.PreviousValue] = (int)MapObjectEnum.Empty;
+            _map[_player.CurrentPosition.X.Value] = (int)MapObjectEnum.Player;
         }
 
         private void PrintMap() 
